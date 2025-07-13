@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WXCXW — Дизайн-студия</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00ff00',
+                        secondary: '#ff00ff',
+                        neon: {
+                            green: '#00ff00',
+                            pink: '#ff00ff'
+                        }
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    },
+                    fontFamily: {
+                        'benzin': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+        
+        * {
+            cursor: none;
+        }
+        
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #00ff00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        .custom-cursor.hover {
+            transform: scale(2);
+            background: #ff00ff;
+            box-shadow: 0 0 20px #ff00ff;
+        }
+        
+        .glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        .shake:hover {
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
+        .neon-glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        .parallax-bg {
+            background-image: url('https://readdy.ai/api/search-image?query=brutal%20minimalist%20digital%20design%20studio%20workspace%20with%20computers%20screens%20showing%20design%20software%20figma%20photoshop%20dark%20atmosphere%20neon%20green%20pink%20accents%20modern%20office%20setup%20creative%20chaos&width=1920&height=1080&seq=hero-bg&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #00ff00;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff00; }
+        }
+        
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+        
+        .brutal-button {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #00ff00;
+            background: black;
+            color: #00ff00;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        .brutal-button:hover {
+            background: #00ff00;
+            color: black;
+            box-shadow: 0 0 20px #00ff00;
+        }
+        
+        .brutal-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .brutal-button:hover::before {
+            left: 100%;
+        }
+        
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-center: center;
+            z-index: 10000;
+        }
+        
+        .loader-text {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #00ff00;
+            animation: explode 2s ease-in-out;
+        }
+        
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(10); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-benzin overflow-x-hidden">
+    <div class="custom-cursor"></div>
+    
+    <div class="loader" id="loader">
+        <div class="loader-text">WXCXW</div>
+    </div>
+    <header class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm border-b border-gray-800">
+        <nav class="flex items-center justify-between px-8 py-4">
+            <div class="text-2xl font-black text-primary glitch">WXCXW</div>
+            <ul class="flex space-x-8">
+                <li><a href="#portfolio" class="text-white hover:text-primary shake transition-colors duration-300">ПОРТФОЛИО</a></li>
+                <li><a href="#services" class="text-white hover:text-primary shake transition-colors duration-300">УСЛУГИ</a></li>
+                <li><a href="#about" class="text-white hover:text-primary shake transition-colors duration-300">О СТУДИИ</a></li>
+                <li><a href="#contact" class="text-white hover:text-primary shake transition-colors duration-300">КОНТАКТЫ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="min-h-screen parallax-bg flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="relative z-10 text-center max-w-4xl px-8">
+            <h1 class="text-6xl md:text-8xl font-black mb-8 glitch">
+                <span id="dynamic-text" class="neon-glow text-primary">ДИЗАЙН — ЭТО НЕ ПРО КРАСИВО</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-12 text-gray-300">ЭТО ПРО ЭФФЕКТИВНО</p>
+            <button class="brutal-button px-12 py-4 text-xl !rounded-button whitespace-nowrap">
+                ЗАКАЗАТЬ — ЕСЛИ НЕ БОИТЕСЬ
+            </button>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-20 px-8">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-black text-center mb-16 fade-in-up">
+                <span class="text-primary">ПОРТФОЛИО</span> ГОВОРИТ САМО ЗА СЕБЯ
+            </h2>
+            
+            <div class="flex justify-center mb-12 space-x-4 fade-in-up">
+                <button class="filter-btn active px-6 py-2 border border-primary text-primary hover:bg-primary hover:text-black transition-all duration-300 !rounded-button whitespace-nowrap" data-filter="all">ВСЕ</button>
+                <button class="filter-btn px-6 py-2 border border-gray-600 text-gray-400 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap" data-filter="branding">БРЕНДИНГ</button>
+                <button class="filter-btn px-6 py-2 border border-gray-600 text-gray-400 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap" data-filter="web">ВЕБ-ДИЗАЙН</button>
+                <button class="filter-btn px-6 py-2 border border-gray-600 text-gray-400 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap" data-filter="motion">АНИМАЦИЯ</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="branding">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20minimalist%20logo%20design%20black%20background%20neon%20green%20accents%20modern%20typography%20corporate%20identity%20brand%20design%20aggressive%20style&width=400&height=300&seq=project-1&orientation=landscape" alt="Проект 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">АГРЕССИВНЫЙ РЕБРЕНДИНГ</h3>
+                        <p class="text-gray-400">Стартап TechCorp</p>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="web">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20minimalist%20website%20design%20dark%20interface%20neon%20pink%20green%20accents%20modern%20web%20design%20aggressive%20typography%20digital%20product&width=400&height=300&seq=project-2&orientation=landscape" alt="Проект 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">УБИЙСТВЕННЫЙ ЛЕНДИНГ</h3>
+                        <p class="text-gray-400">Криптобиржа CoinBlast</p>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="motion">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20motion%20graphics%20animation%20design%20neon%20colors%20glitch%20effects%20digital%20art%20aggressive%20style%20modern%20animation%20frames&width=400&height=300&seq=project-3&orientation=landscape" alt="Проект 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">ВЗРЫВНАЯ АНИМАЦИЯ</h3>
+                        <p class="text-gray-400">Игровая студия PixelWar</p>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="branding">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20packaging%20design%20black%20neon%20green%20pink%20minimalist%20product%20design%20aggressive%20branding%20modern%20package&width=400&height=300&seq=project-4&orientation=landscape" alt="Проект 4" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">ЖЕСТКИЙ ПАКЕЙДЖИНГ</h3>
+                        <p class="text-gray-400">Энергетик PowerShock</p>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="web">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20mobile%20app%20design%20dark%20interface%20neon%20accents%20modern%20ui%20ux%20aggressive%20design%20digital%20product%20smartphone&width=400&height=300&seq=project-5&orientation=landscape" alt="Проект 5" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">БЕСПОЩАДНОЕ ПРИЛОЖЕНИЕ</h3>
+                        <p class="text-gray-400">Фитнес-трекер BeastMode</p>
+                    </div>
+                </div>
+                
+                <div class="project-card bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer" data-category="branding">
+                    <img src="https://readdy.ai/api/search-image?query=brutal%20corporate%20identity%20design%20business%20cards%20letterhead%20black%20neon%20green%20pink%20minimalist%20professional%20aggressive%20style&width=400&height=300&seq=project-6&orientation=landscape" alt="Проект 6" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">РАДИКАЛЬНАЯ АЙДЕНТИКА</h3>
+                        <p class="text-gray-400">Консалтинг BlackStone</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 px-8 bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl font-black text-center mb-16 fade-in-up">
+                МЫ <span class="text-secondary">ЛИКВИДИРУЕМ</span> ВИЗУАЛЬНОЕ ГОВНО
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-primary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-lg mb-6">
+                        <i class="ri-palette-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">БРЕНДИНГ</h3>
+                    <p class="text-gray-400 mb-6">Создаем бренды, которые врезаются в память и не отпускают</p>
+                    <div class="text-primary font-bold text-xl">ОТ 150 000 ₽</div>
+                </div>
+                
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-secondary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-secondary/10 rounded-lg mb-6">
+                        <i class="ri-computer-line text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">ВЕБ-ДИЗАЙН</h3>
+                    <p class="text-gray-400 mb-6">Сайты, которые конвертируют лучше ваших конкурентов</p>
+                    <div class="text-secondary font-bold text-xl">ОТ 200 000 ₽</div>
+                </div>
+                
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-primary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-lg mb-6">
+                        <i class="ri-movie-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">МОУШН-ДИЗАЙН</h3>
+                    <p class="text-gray-400 mb-6">Анимация, которая заставляет остановиться и смотреть</p>
+                    <div class="text-primary font-bold text-xl">ОТ 100 000 ₽</div>
+                </div>
+                
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-secondary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-secondary/10 rounded-lg mb-6">
+                        <i class="ri-smartphone-line text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">UI/UX ДИЗАЙН</h3>
+                    <p class="text-gray-400 mb-6">Интерфейсы, которыми хочется пользоваться каждый день</p>
+                    <div class="text-secondary font-bold text-xl">ОТ 180 000 ₽</div>
+                </div>
+                
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-primary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-lg mb-6">
+                        <i class="ri-gift-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">УПАКОВКА</h3>
+                    <p class="text-gray-400 mb-6">Дизайн упаковки, который продает с полки</p>
+                    <div class="text-primary font-bold text-xl">ОТ 80 000 ₽</div>
+                </div>
+                
+                <div class="service-card bg-black p-8 rounded-lg border border-gray-800 hover:border-secondary transition-all duration-300 fade-in-up">
+                    <div class="w-16 h-16 flex items-center justify-center bg-secondary/10 rounded-lg mb-6">
+                        <i class="ri-megaphone-line text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">РЕКЛАМА</h3>
+                    <p class="text-gray-400 mb-6">Креативы, которые пробивают информационный шум</p>
+                    <div class="text-secondary font-bold text-xl">ОТ 120 000 ₽</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl font-black text-center mb-16 fade-in-up">
+                МЫ НЕ <span class="text-primary">ДИЗАЙНЕРЫ</span><br>
+                МЫ — <span class="text-secondary">ВИЗУАЛЬНЫЕ ХИРУРГИ</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
+                <div class="team-member text-center fade-in-up">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                        <i class="ri-user-line text-4xl text-black"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">АЛЕКСЕЙ ВОЛКОВ</h3>
+                    <p class="text-gray-400 mb-4">Арт-директор</p>
+                    <p class="text-sm italic">"Я ненавижу плохие шрифты больше, чем понедельники"</p>
+                </div>
+                
+                <div class="team-member text-center fade-in-up">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center">
+                        <i class="ri-user-line text-4xl text-black"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">МАРИЯ КОЗЛОВА</h3>
+                    <p class="text-gray-400 mb-4">UX/UI дизайнер</p>
+                    <p class="text-sm italic">"Если пользователь думает — мы облажались"</p>
+                </div>
+                
+                <div class="team-member text-center fade-in-up">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                        <i class="ri-user-line text-4xl text-black"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">ДМИТРИЙ ПЕТРОВ</h3>
+                    <p class="text-gray-400 mb-4">Моушн-дизайнер</p>
+                    <p class="text-sm italic">"Статичный дизайн — это мертвый дизайн"</p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-900 p-12 rounded-lg fade-in-up">
+                <h3 class="text-3xl font-bold mb-8 text-center">НАША ИСТОРИЯ</h3>
+                <div class="timeline space-y-8">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-4 h-4 bg-primary rounded-full flex-shrink-0"></div>
+                        <div>
+                            <div class="text-primary font-bold">2019</div>
+                            <div>Основание студии тремя фрилансерами, уставшими от посредственности</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-4 h-4 bg-secondary rounded-full flex-shrink-0"></div>
+                        <div>
+                            <div class="text-secondary font-bold">2021</div>
+                            <div>Первый крупный проект — ребрендинг сети ресторанов "Огонь"</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-4 h-4 bg-primary rounded-full flex-shrink-0"></div>
+                        <div>
+                            <div class="text-primary font-bold">2023</div>
+                            <div>Расширение команды до 15 человек и открытие второго офиса</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-4 h-4 bg-secondary rounded-full flex-shrink-0"></div>
+                        <div>
+                            <div class="text-secondary font-bold">2024</div>
+                            <div>Победа в конкурсе "Лучшая дизайн-студия года" по версии Sostav.ru</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="py-20 px-8 bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl font-black text-center mb-16 fade-in-up">
+                ГОТОВЫ К <span class="text-primary">РАДИКАЛЬНЫМ</span> ПЕРЕМЕНАМ?
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="fade-in-up">
+                    <div class="bg-black p-8 rounded-lg mb-8">
+                        <h3 class="text-2xl font-bold mb-6">КОНТАКТЫ</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-phone-line text-primary"></i>
+                                </div>
+                                <span>+7 (495) 123-45-67</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-mail-line text-primary"></i>
+                                </div>
+                                <span>hello@wxcxw.ru</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-map-pin-line text-primary"></i>
+                                </div>
+                                <span>Москва, ул. Тверская, 15, офис 301</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="h-64 bg-gray-800 rounded-lg" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center;"></div>
+                </div>
+                
+                <div class="fade-in-up">
+                    <form class="bg-black p-8 rounded-lg space-y-6">
+                        <div>
+                            <input type="text" placeholder="Ваше имя" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="Телефон" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <textarea placeholder="Расскажите о проекте" rows="5" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="brutal-button w-full py-4 text-lg !rounded-button whitespace-nowrap">
+                            ОТПРАВИТЬ ЗАЯВКУ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-12 px-8 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-2xl font-black text-primary mb-4 md:mb-0">WXCXW</div>
+                <div class="flex space-x-6">
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-colors">
+                        <i class="ri-telegram-line"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-colors">
+                        <i class="ri-instagram-line"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-colors">
+                        <i class="ri-behance-line"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-colors">
+                        <i class="ri-dribbble-line"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-gray-400 mt-8">
+                © 2024 WXCXW. Все права защищены. Копирование без разрешения карается визуальным наказанием.
+            </div>
+        </div>
+    </footer>
+
+    <script id="loader-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.display = 'none';
+            }, 2000);
+        });
+    </script>
+
+    <script id="cursor-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursor = document.querySelector('.custom-cursor');
+            const hoverElements = document.querySelectorAll('a, button, .project-card, .service-card, .team-member');
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        });
+    </script>
+
+    <script id="dynamic-text-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const texts = [
+                'ДИЗАЙН — ЭТО НЕ ПРО КРАСИВО',
+                'МЫ ДЕЛАЕМ ДИЗАЙН',
+                'КОТОРЫЙ БЬЕТ ПО МОЗГАМ',
+                'ВИЗУАЛЬНОЕ РЕШЕНИЕ ПРОБЛЕМ'
+            ];
+            const dynamicText = document.getElementById('dynamic-text');
+            let currentIndex = 0;
+
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % texts.length;
+                dynamicText.textContent = texts[currentIndex];
+            }, 3000);
+        });
+    </script>
+
+    <script id="filter-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.dataset.filter;
+                    
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.classList.remove('border-primary', 'text-primary');
+                        b.classList.add('border-gray-600', 'text-gray-400');
+                    });
+                    
+                    btn.classList.add('active');
+                    btn.classList.remove('border-gray-600', 'text-gray-400');
+                    btn.classList.add('border-primary', 'text-primary');
+                    
+                    projectCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script id="scroll-animations-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+    <script id="smooth-scroll-script">
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
